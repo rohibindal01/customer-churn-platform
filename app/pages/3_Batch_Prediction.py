@@ -25,33 +25,49 @@ from components.ui import (  # noqa: E402
     threshold_control,
 )
 
+UPLOAD = "Upload a CSV file"
+SAMPLES = {
+    "Sample: 25 valid customers": "artifacts/serving/sample_batch.csv",
+    "Sample: 5 rows, 3 deliberately invalid": "artifacts/serving/sample_batch_with_errors.csv",
+}
+
 setup_page("Batch Prediction", "📂")
 service = require_service()
 threshold = threshold_control(service)
 sidebar_model_card(service)
 page_header("Batch Prediction",
-            "Upload a CSV of customers. Every row is checked: valid rows are scored, "
-            "invalid rows are listed with the reason.")
+            "Upload a CSV of customers, or try a built-in sample. Every row is checked: valid "
+            "rows are scored, invalid rows are listed with the reason.")
 
 with st.expander("File format and samples"):
     st.markdown("**Required columns:** " + ", ".join(f"`{c}`" for c in service.input_columns))
     st.markdown("**Optional:** `customerID` (kept in the output). A `Churn` column is ignored. "
                 f"Up to {MAX_BATCH_ROWS:,} rows. A blank `TotalCharges` is allowed for new customers.")
     left, right = st.columns(2)
-    sample = artifact_bytes("artifacts/serving/sample_batch.csv")
-    broken = artifact_bytes("artifacts/serving/sample_batch_with_errors.csv")
+    sample = artifact_bytes(SAMPLES["Sample: 25 valid customers"])
+    broken = artifact_bytes(SAMPLES["Sample: 5 rows, 3 deliberately invalid"])
     if sample:
         left.download_button("Download a sample file", sample, "sample_batch.csv", "text/csv")
     if broken:
         right.download_button("Download a sample with invalid rows", broken,
                               "sample_batch_with_errors.csv", "text/csv")
 
-uploaded = st.file_uploader("Upload a CSV file", type=["csv"])
+# Built-in samples go through exactly the same code path as an uploaded file.
+sources = [UPLOAD, *[label for label, rel in SAMPLES.items() if artifact_bytes(rel) is not None]]
+source = st.radio("Data source", sources, horizontal=True, key="batch_source",
+                  help="The samples are held-out validation customers, so you can try the page "
+                       "without preparing a file.")
 explain = st.checkbox("Add each customer's top risk driver and suggested actions", value=True,
-                      help="Slower for very large files.")
-if uploaded is None:
-    st.info("Upload a file to start, or download a sample above.")
-    st.stop()
+                      key="batch_explain", help="Slower for very large files.")
+
+if source == UPLOAD:
+    uploaded = st.file_uploader("Upload a CSV file", type=["csv"], key="batch_upload")
+    if uploaded is None:
+        st.info("Upload a file to start, or choose a sample in Data source.")
+        st.stop()
+    content, file_name = uploaded.getvalue(), uploaded.name
+else:
+    content, file_name = artifact_bytes(SAMPLES[source]), Path(SAMPLES[source]).name
 
 
 def read_csv_bytes(content: bytes) -> pd.DataFrame:
@@ -71,13 +87,12 @@ def score(content: bytes, threshold: float, explain: bool) -> pd.DataFrame:
                                        explain=explain)
 
 
-content = uploaded.getvalue()
 try:
     frame = read_csv_bytes(content)
 except Exception as exc:  # noqa: BLE001 - show any parsing problem to the user
     st.error(f"The file could not be read as CSV: {exc}")
     st.stop()
-st.caption(f"Read {len(frame):,} rows and {frame.shape[1]} columns from {uploaded.name}.")
+st.caption(f"Read {len(frame):,} rows and {frame.shape[1]} columns from {file_name}.")
 
 problems = service.check_file(frame)
 if problems:
@@ -132,6 +147,6 @@ if len(scored):
 st.subheader("Results")
 show_df(results, hide_index=True)
 st.download_button("Download results (CSV)", results.to_csv(index=False).encode("utf-8"),
-                   file_name=f"churn_scores_{Path(uploaded.name).stem}.csv", mime="text/csv",
+                   file_name=f"churn_scores_{Path(file_name).stem}.csv", mime="text/csv",
                    type="primary")
 disclaimer()

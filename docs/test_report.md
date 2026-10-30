@@ -1,6 +1,6 @@
 # Test report
 
-Generated 2026-10-30T21:42:33+00:00 from an actual test run started 2026-10-31T03:09:14.706735+05:30.
+Generated 2026-10-30T22:57:48+00:00 from an actual test run started 2026-10-31T04:25:05.739713+05:30.
 
 Command: `python -m pytest tests --cov --cov-report=term-missing --cov-report=xml:artifacts\tests\coverage.xml --junitxml=artifacts\tests\junit.xml`
 
@@ -8,7 +8,7 @@ Command: `python -m pytest tests --cov --cov-report=term-missing --cov-report=xm
 
 | Tests | Passed | Failed | Errors | Skipped | Duration |
 |---|---|---|---|---|---|
-| 273 | 273 | 0 | 0 | 0 | 142 s |
+| 283 | 283 | 0 | 0 | 0 | 134 s |
 
 Skipped tests are not passed tests: they did not run (see the reasons below).
 
@@ -16,51 +16,53 @@ Skipped tests are not passed tests: they did not run (see the reasons below).
 
 | File | Tests | Passed | Failed | Skipped | Seconds |
 |---|---|---|---|---|---|
-| `tests/integration/test_app_pages.py` | 3 | 3 | 0 | 0 | 9.3 |
-| `tests/integration/test_app_smoke.py` | 11 | 11 | 0 | 0 | 8.7 |
+| `tests/integration/test_app_pages.py` | 3 | 3 | 0 | 0 | 13.0 |
+| `tests/integration/test_app_smoke.py` | 11 | 11 | 0 | 0 | 13.7 |
+| `tests/integration/test_batch_page.py` | 4 | 4 | 0 | 0 | 4.2 |
 | `tests/integration/test_features_real_data.py` | 2 | 2 | 0 | 0 | 0.3 |
 | `tests/integration/test_final_artifacts.py` | 4 | 4 | 0 | 0 | 0.1 |
 | `tests/integration/test_raw_data_file.py` | 2 | 2 | 0 | 0 | 0.1 |
 | `tests/integration/test_reproducibility.py` | 3 | 3 | 0 | 0 | 0.3 |
-| `tests/integration/test_scripts_cli.py` | 5 | 5 | 0 | 0 | 37.4 |
-| `tests/unit/test_app_charts.py` | 7 | 7 | 0 | 0 | 0.4 |
-| `tests/unit/test_benchmark.py` | 7 | 7 | 0 | 0 | 9.0 |
+| `tests/integration/test_scripts_cli.py` | 5 | 5 | 0 | 0 | 15.5 |
+| `tests/unit/test_app_charts.py` | 7 | 7 | 0 | 0 | 0.2 |
+| `tests/unit/test_benchmark.py` | 7 | 7 | 0 | 0 | 7.0 |
 | `tests/unit/test_calibration.py` | 7 | 7 | 0 | 0 | 0.9 |
-| `tests/unit/test_candidates.py` | 7 | 7 | 0 | 0 | 8.3 |
+| `tests/unit/test_candidates.py` | 7 | 7 | 0 | 0 | 8.5 |
 | `tests/unit/test_cleaning.py` | 5 | 5 | 0 | 0 | 0.1 |
-| `tests/unit/test_eda.py` | 8 | 8 | 0 | 0 | 4.0 |
+| `tests/unit/test_docker_files.py` | 6 | 6 | 0 | 0 | 3.4 |
+| `tests/unit/test_eda.py` | 8 | 8 | 0 | 0 | 3.8 |
 | `tests/unit/test_engineering.py` | 8 | 8 | 0 | 0 | 0.1 |
 | `tests/unit/test_evaluation.py` | 5 | 5 | 0 | 0 | 0.2 |
 | `tests/unit/test_explain.py` | 11 | 11 | 0 | 0 | 4.2 |
-| `tests/unit/test_final.py` | 6 | 6 | 0 | 0 | 3.9 |
-| `tests/unit/test_imbalance_and_pipeline.py` | 36 | 36 | 0 | 0 | 7.8 |
+| `tests/unit/test_final.py` | 6 | 6 | 0 | 0 | 4.1 |
+| `tests/unit/test_imbalance_and_pipeline.py` | 36 | 36 | 0 | 0 | 7.6 |
 | `tests/unit/test_logging.py` | 1 | 1 | 0 | 0 | 0.0 |
 | `tests/unit/test_predictor.py` | 12 | 12 | 0 | 0 | 3.7 |
-| `tests/unit/test_preprocessing.py` | 7 | 7 | 0 | 0 | 0.8 |
+| `tests/unit/test_preprocessing.py` | 7 | 7 | 0 | 0 | 0.9 |
 | `tests/unit/test_registry.py` | 17 | 17 | 0 | 0 | 0.1 |
 | `tests/unit/test_risk_and_recommendations.py` | 11 | 11 | 0 | 0 | 0.4 |
 | `tests/unit/test_schema_and_fingerprint.py` | 5 | 5 | 0 | 0 | 0.0 |
-| `tests/unit/test_segmentation.py` | 9 | 9 | 0 | 0 | 3.3 |
+| `tests/unit/test_segmentation.py` | 9 | 9 | 0 | 0 | 3.4 |
 | `tests/unit/test_selection.py` | 9 | 9 | 0 | 0 | 11.6 |
-| `tests/unit/test_serialization.py` | 14 | 14 | 0 | 0 | 9.7 |
+| `tests/unit/test_serialization.py` | 14 | 14 | 0 | 0 | 9.9 |
 | `tests/unit/test_settings_and_logging.py` | 4 | 4 | 0 | 0 | 0.0 |
 | `tests/unit/test_splitting.py` | 6 | 6 | 0 | 0 | 0.2 |
 | `tests/unit/test_threshold.py` | 9 | 9 | 0 | 0 | 0.1 |
-| `tests/unit/test_tracking.py` | 2 | 2 | 0 | 0 | 8.8 |
-| `tests/unit/test_tuning.py` | 17 | 17 | 0 | 0 | 7.8 |
+| `tests/unit/test_tracking.py` | 2 | 2 | 0 | 0 | 8.4 |
+| `tests/unit/test_tuning.py` | 17 | 17 | 0 | 0 | 7.5 |
 | `tests/unit/test_validator.py` | 13 | 13 | 0 | 0 | 0.4 |
 
 ## Coverage
 
-Overall line coverage **92.9%**, branch coverage **71.4%** (source: `src/churn` and `app`).
+Overall line coverage **94.1%**, branch coverage **72.5%** (source: `src/churn` and `app`).
 
 Least covered first. Coverage shows what did not run; it does not measure test quality.
 
 | File | Lines | Covered | Line coverage | Branch coverage |
 |---|---|---|---|---|
-| `pages/3_Batch_Prediction.py` | 90 | 30 | 33.3% | 13.6% |
 | `models/final.py` | 158 | 127 | 80.4% | 33.3% |
 | `components/ui.py` | 64 | 54 | 84.4% | 60.0% |
+| `pages/3_Batch_Prediction.py` | 96 | 81 | 84.4% | 50.0% |
 | `models/benchmark.py` | 143 | 122 | 85.3% | 57.1% |
 | `components/loaders.py` | 47 | 42 | 89.4% | 62.5% |
 | `config/settings.py` | 128 | 116 | 90.6% | 71.4% |
