@@ -1,0 +1,128 @@
+EXPLAINABILITY REPORT: Logistic Regression (uncalibrated), threshold 0.40
+Data: validation split (1409 customers explained). SHAP background: 200 training customers.
+Explainer: linear (log-odds). Additivity check, max |baseline + sum(SHAP) - model output|: 1.78e-15
+The test split is not used here.
+
+1. PERMUTATION IMPORTANCE (drop in validation PR-AUC when one raw input column is shuffled, 20 repeats)
+         feature  importance_mean  importance_std  share_positive
+          tenure           0.3588          0.0057            1.00
+    TotalCharges           0.1596          0.0131            1.00
+ InternetService           0.1292          0.0185            1.00
+  MonthlyCharges           0.0738          0.0102            1.00
+        Contract           0.0595          0.0132            1.00
+ StreamingMovies           0.0194          0.0081            1.00
+  OnlineSecurity           0.0142          0.0089            0.95
+     TechSupport           0.0132          0.0063            1.00
+     StreamingTV           0.0115          0.0086            1.00
+   MultipleLines           0.0097          0.0059            0.95
+PaperlessBilling           0.0094          0.0059            0.90
+   PaymentMethod           0.0044          0.0085            0.60
+   share_positive = fraction of repeats in which shuffling made the model worse.
+
+2. SHAP IMPORTANCE BY MODEL FEATURE (mean |SHAP|; one-hot columns summed per feature)
+                 group  mean_abs_shap  share_pct
+                tenure         1.2307    23.2893
+              Contract         0.6323    11.9652
+       InternetService         0.6162    11.6595
+          tenure_group         0.3626     6.8611
+          TotalCharges         0.2851     5.3950
+        MonthlyCharges         0.2593     4.9069
+         MultipleLines         0.2234     4.2279
+no_security_or_support         0.2207     4.1761
+           addon_count         0.2076     3.9294
+     avg_monthly_spend         0.1772     3.3533
+           StreamingTV         0.1753     3.3168
+      PaperlessBilling         0.1647     3.1161
+       StreamingMovies         0.1339     2.5346
+          OnlineBackup         0.1265     2.3940
+         PaymentMethod         0.1246     2.3581
+
+3. DIRECTION OF EFFECT (top 15 preprocessed features; mean SHAP when high/present vs low/absent)
+                    feature  mean_abs_shap  effect_high  effect_low                direction
+                     tenure         1.2307      -1.5122      1.9124    lowers risk when high
+InternetService_Fiber optic         0.5527       0.6882     -0.4400 raises risk when present
+    Contract_Month-to-month         0.4003       0.4289     -0.3653 raises risk when present
+          Contract_Two year         0.3485      -0.6219      0.2665 lowers risk when present
+               TotalCharges         0.2851       0.4452     -0.3578    raises risk when high
+             MonthlyCharges         0.2593      -0.3579      0.4112    lowers risk when high
+     no_security_or_support         0.2207       0.3559     -0.1454 raises risk when present
+           tenure_group_61+         0.2105       0.4237     -0.1567 raises risk when present
+                addon_count         0.2076       0.2320     -0.2833    raises risk when high
+         tenure_group_49-60         0.1932       0.5939     -0.1393 raises risk when present
+          avg_monthly_spend         0.1772      -0.2449      0.2824    lowers risk when high
+           MultipleLines_No         0.1766      -0.1952      0.1597 lowers risk when present
+       PaperlessBilling_Yes         0.1647       0.1446     -0.1916 raises risk when present
+            StreamingTV_Yes         0.1634       0.2197     -0.1291 raises risk when present
+        StreamingMovies_Yes         0.1216       0.1460     -0.1057 raises risk when present
+
+4. MODEL COEFFICIENTS (39 of 50 non-zero). Numeric features are standardized: a coefficient is the change in log-odds per 1 standard deviation.
+                    feature  coefficient  odds_ratio
+                     tenure      -1.3676      0.2547
+InternetService_Fiber optic       1.1282      3.0900
+          Contract_Two year      -0.8884      0.4113
+    Contract_Month-to-month       0.7942      2.2127
+         tenure_group_49-60       0.7332      2.0818
+           tenure_group_61+       0.5803      1.7867
+     no_security_or_support       0.5013      1.6509
+           MultipleLines_No      -0.3550      0.7012
+            StreamingTV_Yes       0.3488      1.4174
+       PaperlessBilling_Yes       0.3362      1.3996
+         tenure_group_13-24      -0.3307      0.7184
+               TotalCharges       0.3274      1.3873
+
+5. INDIVIDUAL CUSTOMERS (validation split)
+  [highest_risk] customer 5567-WSELE: churn probability 0.872 -> FLAGGED at threshold 0.40
+    average customer -2.073 log-odds; this customer +1.923 log-odds
+    +1.983  tenure = 3.0   (odds x7.27)
+    +0.773  InternetService = Fiber optic   (odds x2.17)
+    +0.695  Contract = Month-to-month   (odds x2.00)
+    +0.356  no_security_or_support = 1   (odds x1.43)
+    -0.343  TotalCharges = 279.55   (odds x0.71)
+    -0.327  tenure_group = 0-12   (odds x0.72)
+    -0.289  MonthlyCharges = 94.6   (odds x0.75)
+    +0.233  StreamingTV = Yes   (odds x1.26)
+    +0.914  other features   (odds x2.49)
+
+  [typical_flagged] customer 9606-PBKBQ: churn probability 0.599 -> FLAGGED at threshold 0.40
+    average customer -2.073 log-odds; this customer +0.399 log-odds
+    +0.773  InternetService = Fiber optic   (odds x2.17)
+    +0.695  Contract = Month-to-month   (odds x2.00)
+    +0.375  tenure = 32.0   (odds x1.46)
+    +0.356  no_security_or_support = 1   (odds x1.43)
+    -0.249  tenure_group = 25-48   (odds x0.78)
+    +0.225  MultipleLines = Yes   (odds x1.25)
+    -0.197  MonthlyCharges = 85.0   (odds x0.82)
+    +0.168  PaymentMethod = Electronic check   (odds x1.18)
+    +0.325  other features   (odds x1.38)
+
+  [borderline_flagged] customer 6693-FRIRW: churn probability 0.401 -> FLAGGED at threshold 0.40
+    average customer -2.073 log-odds; this customer -0.403 log-odds
+    +1.152  tenure = 18.0   (odds x3.16)
+    +0.773  InternetService = Fiber optic   (odds x2.17)
+    +0.695  Contract = Month-to-month   (odds x2.00)
+    -0.571  tenure_group = 13-24   (odds x0.56)
+    +0.356  no_security_or_support = 1   (odds x1.43)
+    -0.354  MonthlyCharges = 101.3   (odds x0.70)
+    -0.244  MultipleLines = No   (odds x0.78)
+    +0.233  StreamingTV = Yes   (odds x1.26)
+    -0.371  other features   (odds x0.69)
+
+  [lowest_risk] customer 6928-ONTRW: churn probability 0.002 -> not flagged at threshold 0.40
+    average customer -2.073 log-odds; this customer -6.392 log-odds
+    -1.843  tenure = 72.0   (odds x0.16)
+    -0.987  Contract = Two year   (odds x0.37)
+    +0.434  MonthlyCharges = 19.7   (odds x1.54)
+    -0.424  InternetService = No   (odds x0.65)
+    +0.340  tenure_group = 61+   (odds x1.40)
+    +0.301  avg_monthly_spend = 19.16   (odds x1.35)
+    -0.283  addon_count = 0   (odds x0.75)
+    -0.244  MultipleLines = No   (odds x0.78)
+    -1.613  other features   (odds x0.20)
+
+CAVEATS
+  Importance shows what the MODEL relies on, not what CAUSES churn. Changing a feature for a
+    customer is not proven to change their behaviour without an intervention test.
+  Correlated features (tenure, TotalCharges, avg_monthly_spend, tenure_group) share and split
+    importance; each can look smaller than the information they carry together.
+  Shuffling a raw column in permutation importance also changes the features engineered from it.
+  SHAP contributions are relative to the average customer in the training background sample.

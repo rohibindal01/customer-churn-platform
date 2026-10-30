@@ -1,0 +1,23 @@
+{
+  "created_utc": "2026-10-30T20:11:27+00:00",
+  "model": "logistic_regression",
+  "model_label": "Logistic Regression",
+  "calibration": "uncalibrated",
+  "threshold": 0.4,
+  "explainer": "linear",
+  "units": "log-odds",
+  "background_rows": 200,
+  "explained_rows": 1409,
+  "additivity_max_error": 1.7763568394002505e-15,
+  "n_repeats": 20,
+  "permutation_scoring": "average_precision",
+  "split": "validation",
+  "examples": {
+    "highest_risk": "5567-WSELE",
+    "typical_flagged": "9606-PBKBQ",
+    "borderline_flagged": "6693-FRIRW",
+    "lowest_risk": "6928-ONTRW"
+  },
+  "source_fingerprint": "88be4b93fbe0",
+  "shap_version": "0.54.1"
+}
