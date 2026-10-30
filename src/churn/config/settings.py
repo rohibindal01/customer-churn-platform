@@ -55,6 +55,35 @@ class LoggingSettings:
 
 
 @dataclass(frozen=True)
+class ThresholdSettings:
+    recall_target: float = 0.80
+
+    def __post_init__(self) -> None:
+        if not 0.0 < self.recall_target <= 1.0:
+            raise ValueError(f"recall_target must be in (0, 1], got {self.recall_target}")
+
+
+@dataclass(frozen=True)
+class BusinessSettings:
+    """Retention economics for the business-cost threshold.
+
+    The defaults are PLACEHOLDER assumptions, not company figures.
+    """
+    customer_value: float = 500.0
+    offer_cost: float = 50.0
+    save_rate: float = 0.30
+    currency: str = "units"
+
+    def __post_init__(self) -> None:
+        if self.customer_value <= 0:
+            raise ValueError(f"customer_value must be positive, got {self.customer_value}")
+        if self.offer_cost < 0:
+            raise ValueError(f"offer_cost cannot be negative, got {self.offer_cost}")
+        if not 0.0 < self.save_rate <= 1.0:
+            raise ValueError(f"save_rate must be in (0, 1], got {self.save_rate}")
+
+
+@dataclass(frozen=True)
 class Settings:
     project_name: str
     random_seed: int
@@ -64,6 +93,8 @@ class Settings:
     split: SplitSettings
     mlflow: MlflowSettings
     logging: LoggingSettings
+    threshold: ThresholdSettings
+    business: BusinessSettings
 
     # ---- data folders -------------------------------------------------
     @property
@@ -90,6 +121,14 @@ class Settings:
     @property
     def models_dir(self) -> Path:
         return self.artifacts_dir / "models"
+
+    @property
+    def tuned_models_dir(self) -> Path:
+        return self.models_dir / "tuned"
+
+    @property
+    def candidates_dir(self) -> Path:
+        return self.models_dir / "candidates"
 
     @property
     def metrics_dir(self) -> Path:
@@ -143,9 +182,12 @@ def get_settings(config_path: str | None = None) -> Settings:
     path = Path(config_path) if config_path else root / "config.yaml"
     if not path.exists():
         raise FileNotFoundError(f"Config file not found: {path}")
-
     with path.open("r", encoding="utf-8") as handle:
         raw = yaml.safe_load(handle)
+
+    threshold_raw = raw.get("threshold") or {}
+    business_raw = raw.get("business") or {}
+    defaults = BusinessSettings()
 
     return Settings(
         project_name=raw["project"]["name"],
@@ -156,4 +198,13 @@ def get_settings(config_path: str | None = None) -> Settings:
         split=SplitSettings(**raw["split"]),
         mlflow=MlflowSettings(**raw["mlflow"]),
         logging=LoggingSettings(**raw["logging"]),
+        threshold=ThresholdSettings(
+            recall_target=float(threshold_raw.get("recall_target", 0.80)),
+        ),
+        business=BusinessSettings(
+            customer_value=float(business_raw.get("customer_value", defaults.customer_value)),
+            offer_cost=float(business_raw.get("offer_cost", defaults.offer_cost)),
+            save_rate=float(business_raw.get("save_rate", defaults.save_rate)),
+            currency=str(business_raw.get("currency", defaults.currency)),
+        ),
     )

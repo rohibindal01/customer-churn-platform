@@ -23,3 +23,14 @@ mlflow:
 logging:
   level: INFO
   file: churn.log
+
+threshold:
+  recall_target: 0.80
+
+# PLACEHOLDER retention economics: illustrative assumptions, NOT company figures.
+# Replace them when real numbers are known. save_rate needs real intervention data.
+business:
+  currency: units
+  customer_value: 500.0
+  offer_cost: 50.0
+  save_rate: 0.30

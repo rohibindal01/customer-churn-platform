@@ -17,5 +17,6 @@ data/interim/*
 data/processed/*
 !data/**/.gitkeep
 artifacts/models/tuned/
+artifacts/models/candidates/
 .idea/
 .vscode/

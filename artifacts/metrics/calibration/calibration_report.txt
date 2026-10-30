@@ -1,0 +1,51 @@
+VALIDATION COMPARISON (fitted on the training split, scored on the validation split)
+              model  calibration  roc_auc  pr_auc  brier  log_loss    ece  fit_seconds
+  gradient_boosting      sigmoid   0.8404  0.6508 0.1364    0.4220 0.0170       3.1778
+  gradient_boosting uncalibrated   0.8404  0.6508 0.1364    0.4221 0.0212       1.0954
+           catboost uncalibrated   0.8387  0.6505 0.1365    0.4239 0.0237       2.0887
+           catboost      sigmoid   0.8387  0.6505 0.1369    0.4277 0.0315       7.8149
+logistic_regression uncalibrated   0.8356  0.6475 0.1380    0.4281 0.0299       2.5485
+logistic_regression      sigmoid   0.8356  0.6475 0.1380    0.4275 0.0270       6.3952
+            xgboost uncalibrated   0.8383  0.6463 0.1372    0.4245 0.0280       0.4882
+            xgboost      sigmoid   0.8383  0.6463 0.1377    0.4298 0.0286       1.4474
+           adaboost      sigmoid   0.8379  0.6462 0.1376    0.4260 0.0223      30.0085
+           adaboost uncalibrated   0.8379  0.6462 0.1704    0.5236 0.1718       2.5133
+           catboost     isotonic   0.8379  0.6387 0.1367    0.4336 0.0282       5.1351
+            xgboost     isotonic   0.8379  0.6353 0.1372    0.4349 0.0315       1.6532
+  gradient_boosting     isotonic   0.8400  0.6334 0.1368    0.4320 0.0198       3.0115
+           adaboost     isotonic   0.8362  0.6279 0.1380    0.4377 0.0270      17.1681
+logistic_regression     isotonic   0.8324  0.6235 0.1395    0.4318 0.0293       6.2223
+
+roc_auc / pr_auc: ranking quality (higher is better).
+brier / log_loss / ece: probability quality (lower is better).
+
+BUSINESS ASSUMPTIONS (PLACEHOLDERS - replace them in config.yaml when real figures are known)
+  customer_value = 500 units, offer_cost = 50 units, save_rate = 0.3
+  net_benefit = TP x save_rate x customer_value - (TP + FP) x offer_cost
+  break-even probability = offer_cost / (save_rate x customer_value) = 0.333
+
+THRESHOLD CHOICES (lowest-Brier calibration per model; recall target 0.80)
+              model  calibration          policy  threshold  precision  recall    f1  flagged_pct  net_benefit_per_1000
+           adaboost      sigmoid     default_0.5       0.50      0.654   0.535 0.588       21.718             10432.931
+           adaboost      sigmoid          max_f1       0.34      0.567   0.735 0.640       34.422             12065.295
+           adaboost      sigmoid   recall_target       0.25      0.498   0.805 0.615       42.938             10574.876
+           adaboost      sigmoid max_net_benefit       0.34      0.567   0.735 0.640       34.422             12065.295
+           catboost uncalibrated     default_0.5       0.50      0.679   0.521 0.590       20.369             10574.876
+           catboost uncalibrated          max_f1       0.37      0.609   0.695 0.649       30.305             12526.615
+           catboost uncalibrated   recall_target       0.25      0.498   0.805 0.615       42.938             10574.876
+           catboost uncalibrated max_net_benefit       0.37      0.609   0.695 0.649       30.305             12526.615
+  gradient_boosting      sigmoid     default_0.5       0.50      0.672   0.521 0.587       20.582             10468.417
+  gradient_boosting      sigmoid          max_f1       0.35      0.583   0.706 0.638       32.150             12029.808
+  gradient_boosting      sigmoid   recall_target       0.24      0.494   0.816 0.616       43.790             10574.876
+  gradient_boosting      sigmoid max_net_benefit       0.35      0.583   0.706 0.638       32.150             12029.808
+logistic_regression uncalibrated     default_0.5       0.50      0.663   0.532 0.591       21.292             10539.390
+logistic_regression uncalibrated          max_f1       0.40      0.604   0.658 0.630       28.886             11745.919
+logistic_regression uncalibrated   recall_target       0.24      0.492   0.805 0.611       43.435             10326.473
+logistic_regression uncalibrated max_net_benefit       0.40      0.604   0.658 0.630       28.886             11745.919
+            xgboost     isotonic     default_0.5       0.50      0.676   0.524 0.590       20.582             10574.876
+            xgboost     isotonic          max_f1       0.36      0.614   0.663 0.638       28.673             12065.295
+            xgboost     isotonic   recall_target       0.25      0.484   0.824 0.610       45.138             10220.014
+            xgboost     isotonic max_net_benefit       0.36      0.614   0.663 0.638       28.673             12065.295
+
+Note: thresholds are chosen and scored on the same validation rows, so these numbers
+are slightly optimistic. The test split (Milestone 6B) gives the final, honest estimate.

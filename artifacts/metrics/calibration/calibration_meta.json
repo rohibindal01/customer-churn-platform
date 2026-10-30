@@ -1,0 +1,29 @@
+{
+  "created_utc": "2026-10-30T19:47:03+00:00",
+  "random_seed": 42,
+  "cv_folds": 5,
+  "methods": [
+    "uncalibrated",
+    "sigmoid",
+    "isotonic"
+  ],
+  "models": [
+    "adaboost",
+    "catboost",
+    "gradient_boosting",
+    "logistic_regression",
+    "xgboost"
+  ],
+  "recall_target": 0.8,
+  "business_assumptions": {
+    "customer_value": 500.0,
+    "offer_cost": 50.0,
+    "save_rate": 0.3,
+    "currency": "units",
+    "status": "PLACEHOLDER"
+  },
+  "train_rows": 4225,
+  "validation_rows": 1409,
+  "test_split_used": false,
+  "source_fingerprint": "88be4b93fbe0"
+}
