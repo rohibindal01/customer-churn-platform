@@ -1,0 +1,11 @@
+{
+  "created_utc": "2026-10-30T21:00:39+00:00",
+  "model": "logistic_regression",
+  "threshold": 0.4,
+  "background_rows": 200,
+  "portfolio_rows": 1409,
+  "portfolio_rejected_rows": 0,
+  "portfolio_split": "validation",
+  "test_split_used": false,
+  "source_fingerprint": "88be4b93fbe0"
+}
