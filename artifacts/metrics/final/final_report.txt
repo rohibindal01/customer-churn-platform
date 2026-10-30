@@ -1,0 +1,36 @@
+FINAL MODEL: Logistic Regression (uncalibrated)
+  Selected by: rule. statistically tied with gradient_boosting__uncalibrated (PR-AUC gap 0.0032, 95% CI -0.0141 to 0.0224), Brier within tolerance, and simpler
+  Threshold: 0.40 (policy 'max_net_benefit', chosen on the validation split)
+  Test evaluation count: 1
+
+TEST SPLIT (1409 customers, churn rate 26.54%) - threshold-free metrics with 95% bootstrap intervals
+  roc_auc  0.8435  (95% CI 0.8205 to 0.8646)
+  pr_auc   0.6414  (95% CI 0.5867 to 0.6932)
+  brier    0.1371  (95% CI 0.1268 to 0.1478)
+  log_loss 0.4181   ece 0.0202   mean predicted 0.266 vs observed 0.265
+
+VALIDATION vs TEST (same model, same threshold)
+  PR-AUC   validation 0.6475   test 0.6414
+  ROC-AUC  validation 0.8356   test 0.8435
+  Brier    validation 0.1380   test 0.1371
+  Recall   validation 0.658    test 0.666
+  Precision validation 0.604   test 0.585
+
+TEST METRICS AT EACH STORED THRESHOLD
+  policy            threshold  precision  recall   f1     specificity  bal_acc  mcc    flagged%  net/1000
+  default_0.5       0.50       0.638      0.519    0.572  0.894        0.706    0.443  21.6      9865.2
+  max_f1            0.40       0.585      0.666    0.623  0.829        0.747    0.476  30.2      11391.1
+  recall_target     0.24       0.491      0.816    0.613  0.695        0.755    0.454  44.1      10432.9
+  max_net_benefit   0.40       0.585      0.666    0.623  0.829        0.747    0.476  30.2      11391.1
+
+CLASSIFICATION REPORT (chosen threshold)
+              precision    recall  f1-score   support
+
+    Retained      0.873     0.829     0.850      1035
+     Churned      0.585     0.666     0.623       374
+
+    accuracy                          0.786      1409
+   macro avg      0.729     0.747     0.736      1409
+weighted avg      0.796     0.786     0.790      1409
+
+Net benefit uses PLACEHOLDER business costs and is illustrative only.

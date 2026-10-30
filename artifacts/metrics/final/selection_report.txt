@@ -1,0 +1,32 @@
+SELECTION RULE (fixed before the test split is opened)
+  1. Per model, use the uncalibrated pipeline unless sigmoid calibration lowers the validation Brier score by more than 0.001. Isotonic is excluded: in Milestone 6A it lowered PR-AUC and raised log loss for every model.
+  2. The reference is the variant with the highest validation PR-AUC.
+  3. A variant is eligible when the paired-bootstrap 95% interval of (reference PR-AUC - variant PR-AUC) contains 0 and its Brier score is within 0.005 of the best Brier score.
+  4. Among eligible variants, choose the simplest (complexity order: logistic_regression < gradient_boosting < adaboost < xgboost < catboost), preferring no calibration wrapper.
+
+VALIDATION EVIDENCE (reference = gradient_boosting__uncalibrated; gap = reference PR-AUC - variant PR-AUC)
+              model  calibration  pr_auc  pr_auc_ci_low  pr_auc_ci_high  gap_to_reference  gap_ci_low  gap_ci_high  brier  tied_with_reference  brier_ok  eligible
+logistic_regression uncalibrated  0.6475         0.5966          0.7003            0.0032     -0.0141       0.0224 0.1380                 True      True      True
+  gradient_boosting uncalibrated  0.6508         0.5994          0.7041            0.0000      0.0000       0.0000 0.1364                 True      True      True
+           adaboost      sigmoid  0.6462         0.5950          0.7011            0.0046     -0.0087       0.0169 0.1376                 True      True      True
+            xgboost uncalibrated  0.6463         0.5949          0.7012            0.0045     -0.0053       0.0141 0.1372                 True      True      True
+           catboost uncalibrated  0.6505         0.5982          0.7047            0.0003     -0.0064       0.0063 0.1365                 True      True      True
+
+VARIANT CHOICE PER MODEL
+  logistic_regression: uncalibrated (sigmoid did not lower Brier by more than 0.001)
+  gradient_boosting: uncalibrated (sigmoid did not lower Brier by more than 0.001)
+  adaboost: sigmoid (sigmoid lowered Brier from 0.1704 to 0.1376)
+  xgboost: uncalibrated (sigmoid did not lower Brier by more than 0.001)
+  catboost: uncalibrated (sigmoid did not lower Brier by more than 0.001)
+
+DECISION: logistic_regression + uncalibrated  [rule]
+  Reason: statistically tied with gradient_boosting__uncalibrated (PR-AUC gap 0.0032, 95% CI -0.0141 to 0.0224), Brier within tolerance, and simpler
+
+THRESHOLD POLICIES FOR THE CHOSEN MODEL (validation; selected policy = max_net_benefit)
+         policy  threshold  precision  recall    f1  flagged_pct  net_benefit_per_1000
+    default_0.5       0.50      0.663   0.532 0.591       21.292             10539.390
+         max_f1       0.40      0.604   0.658 0.630       28.886             11745.919
+  recall_target       0.24      0.492   0.805 0.611       43.435             10326.473
+max_net_benefit       0.40      0.604   0.658 0.630       28.886             11745.919
+
+Business costs are PLACEHOLDERS: customer_value=500, offer_cost=50, save_rate=0.3 (units).

@@ -1,0 +1,223 @@
+{
+  "model_name": "churn_pipeline",
+  "created_utc": "2026-10-30T19:59:58+00:00",
+  "model": "logistic_regression",
+  "model_label": "Logistic Regression",
+  "calibration": "uncalibrated",
+  "imbalance_strategy": "none",
+  "selected_by": "rule",
+  "selection_reason": "statistically tied with gradient_boosting__uncalibrated (PR-AUC gap 0.0032, 95% CI -0.0141 to 0.0224), Brier within tolerance, and simpler",
+  "selection_rule": [
+    "1. Per model, use the uncalibrated pipeline unless sigmoid calibration lowers the validation Brier score by more than 0.001. Isotonic is excluded: in Milestone 6A it lowered PR-AUC and raised log loss for every model.",
+    "2. The reference is the variant with the highest validation PR-AUC.",
+    "3. A variant is eligible when the paired-bootstrap 95% interval of (reference PR-AUC - variant PR-AUC) contains 0 and its Brier score is within 0.005 of the best Brier score.",
+    "4. Among eligible variants, choose the simplest (complexity order: logistic_regression < gradient_boosting < adaboost < xgboost < catboost), preferring no calibration wrapper."
+  ],
+  "hyperparameters": {
+    "model__C": 3.0,
+    "model__l1_ratio": 0.5,
+    "model__max_iter": 5000,
+    "model__solver": "saga"
+  },
+  "threshold": {
+    "policy": "max_net_benefit",
+    "value": 0.4,
+    "all_policies": {
+      "default_0.5": 0.5,
+      "max_f1": 0.4,
+      "recall_target": 0.24,
+      "max_net_benefit": 0.4
+    },
+    "chosen_on": "validation split"
+  },
+  "business_assumptions": {
+    "customer_value": 500.0,
+    "offer_cost": 50.0,
+    "save_rate": 0.3,
+    "currency": "units",
+    "status": "PLACEHOLDER"
+  },
+  "input_columns": [
+    "gender",
+    "SeniorCitizen",
+    "Partner",
+    "Dependents",
+    "tenure",
+    "PhoneService",
+    "MultipleLines",
+    "InternetService",
+    "OnlineSecurity",
+    "OnlineBackup",
+    "DeviceProtection",
+    "TechSupport",
+    "StreamingTV",
+    "StreamingMovies",
+    "Contract",
+    "PaperlessBilling",
+    "PaymentMethod",
+    "MonthlyCharges",
+    "TotalCharges"
+  ],
+  "feature_names": [
+    "tenure",
+    "MonthlyCharges",
+    "TotalCharges",
+    "addon_count",
+    "avg_monthly_spend",
+    "charge_gap",
+    "SeniorCitizen",
+    "no_security_or_support",
+    "is_auto_payment",
+    "gender_Male",
+    "Partner_Yes",
+    "Dependents_Yes",
+    "PhoneService_Yes",
+    "MultipleLines_No",
+    "MultipleLines_No phone service",
+    "MultipleLines_Yes",
+    "InternetService_DSL",
+    "InternetService_Fiber optic",
+    "InternetService_No",
+    "OnlineSecurity_No",
+    "OnlineSecurity_No internet service",
+    "OnlineSecurity_Yes",
+    "OnlineBackup_No",
+    "OnlineBackup_No internet service",
+    "OnlineBackup_Yes",
+    "DeviceProtection_No",
+    "DeviceProtection_No internet service",
+    "DeviceProtection_Yes",
+    "TechSupport_No",
+    "TechSupport_No internet service",
+    "TechSupport_Yes",
+    "StreamingTV_No",
+    "StreamingTV_No internet service",
+    "StreamingTV_Yes",
+    "StreamingMovies_No",
+    "StreamingMovies_No internet service",
+    "StreamingMovies_Yes",
+    "Contract_Month-to-month",
+    "Contract_One year",
+    "Contract_Two year",
+    "PaperlessBilling_Yes",
+    "PaymentMethod_Bank transfer (automatic)",
+    "PaymentMethod_Credit card (automatic)",
+    "PaymentMethod_Electronic check",
+    "PaymentMethod_Mailed check",
+    "tenure_group_0-12",
+    "tenure_group_13-24",
+    "tenure_group_25-48",
+    "tenure_group_49-60",
+    "tenure_group_61+"
+  ],
+  "validation_metrics": {
+    "roc_auc": 0.8355924978687127,
+    "pr_auc": 0.6475493284174302,
+    "brier": 0.13799893160787893,
+    "log_loss": 0.42807403209592637,
+    "ece": 0.029934863473279498,
+    "at_threshold": {
+      "threshold": 0.4,
+      "precision": 0.6044226044226044,
+      "recall": 0.6577540106951871,
+      "f1": 0.6299615877080665,
+      "flagged_pct": 28.885734563520227,
+      "net_benefit_per_1000": 11745.919091554293
+    }
+  },
+  "test_metrics": {
+    "probability": {
+      "roc_auc": 0.8434705107339379,
+      "pr_auc": 0.6413936380917684,
+      "brier": 0.13707699722477706,
+      "log_loss": 0.41808961030450326,
+      "ece": 0.020192562115587342,
+      "mean_predicted": 0.26617874623882154,
+      "observed_rate": 0.2654364797728886
+    },
+    "confidence_intervals": {
+      "roc_auc": {
+        "value": 0.8434705107339379,
+        "ci_low": 0.8205310148556263,
+        "ci_high": 0.8645758803824576,
+        "n_boot": 2000
+      },
+      "pr_auc": {
+        "value": 0.6413936380917684,
+        "ci_low": 0.5867064695825283,
+        "ci_high": 0.6931923274457805,
+        "n_boot": 2000
+      },
+      "brier": {
+        "value": 0.13707699722477706,
+        "ci_low": 0.126780687983179,
+        "ci_high": 0.1478457240625434,
+        "n_boot": 2000
+      }
+    },
+    "at_threshold": {
+      "accuracy": 0.7856635911994322,
+      "precision": 0.5845070422535211,
+      "recall": 0.6657754010695187,
+      "f1": 0.6225,
+      "roc_auc": 0.8434705107339379,
+      "pr_auc": 0.6413936380917684,
+      "specificity": 0.8289855072463768,
+      "balanced_accuracy": 0.7473804541579477,
+      "mcc": 0.47568537115953036,
+      "brier": 0.13707699722477706,
+      "tn": 858,
+      "fp": 177,
+      "fn": 125,
+      "tp": 249,
+      "threshold": 0.4,
+      "flagged_pct": 30.234208658623135,
+      "net_benefit": 16050.0,
+      "net_benefit_per_1000": 11391.057487579845
+    }
+  },
+  "data": {
+    "source_fingerprint": "88be4b93fbe0",
+    "random_seed": 42,
+    "splits": {
+      "train": {
+        "file": "train.csv",
+        "rows": 4225,
+        "churned": 1121,
+        "churn_rate_pct": 26.53
+      },
+      "validation": {
+        "file": "validation.csv",
+        "rows": 1409,
+        "churned": 374,
+        "churn_rate_pct": 26.54
+      },
+      "test": {
+        "file": "test.csv",
+        "rows": 1409,
+        "churned": 374,
+        "churn_rate_pct": 26.54
+      }
+    }
+  },
+  "training": {
+    "fitted_on": "train split only",
+    "artifact": "artifacts/models/final/churn_pipeline.joblib"
+  },
+  "test_evaluation_count": 1,
+  "forced_rerun": false,
+  "environment": {
+    "python": "3.12.0",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "versions": {
+      "scikit-learn": "1.9.1",
+      "imbalanced-learn": "0.14.2",
+      "xgboost": "3.4.1",
+      "lightgbm": "4.7.0",
+      "catboost": "1.2.10",
+      "pandas": "3.1.0",
+      "numpy": "2.5.4",
+      "joblib": "1.6.0"
+    }
+  }
+}
