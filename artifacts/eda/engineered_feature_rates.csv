@@ -1,0 +1,17 @@
+feature,category,customers,churned,churn_rate_pct
+no_security_or_support,0,2695,364,13.51
+no_security_or_support,1,1530,757,49.48
+is_auto_payment,0,2390,834,34.9
+is_auto_payment,1,1835,287,15.64
+tenure_group,0-12,1318,623,47.27
+tenure_group,13-24,629,184,29.25
+tenure_group,25-48,940,186,19.79
+tenure_group,49-60,491,79,16.09
+tenure_group,61+,847,49,5.79
+addon_count,0,1322,281,21.26
+addon_count,1,568,257,45.25
+addon_count,2,632,230,36.39
+addon_count,3,654,187,28.59
+addon_count,4,523,116,22.18
+addon_count,5,350,42,12.0
+addon_count,6,176,8,4.55
