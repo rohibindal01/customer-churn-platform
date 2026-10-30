@@ -1,0 +1,25 @@
+project:
+  name: customer-churn-platform
+  random_seed: 42
+
+data:
+  raw_filename: WA_Fn-UseC_-Telco-Customer-Churn.csv
+  target_column: Churn
+  id_column: customerID
+  positive_label: "Yes"
+
+split:
+  train_size: 0.60
+  validation_size: 0.20
+  test_size: 0.20
+
+cv:
+  n_splits: 5
+
+mlflow:
+  experiment_name: telco-churn
+  db_file: mlflow.db
+
+logging:
+  level: INFO
+  file: churn.log
