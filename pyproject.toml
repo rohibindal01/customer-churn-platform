@@ -14,3 +14,12 @@ where = ["src"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = "-ra"
+
+[tool.coverage.run]
+source = ["src/churn", "app"]
+branch = true
+
+[tool.coverage.report]
+show_missing = true
+skip_empty = true
+precision = 1
