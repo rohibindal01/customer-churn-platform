@@ -16,5 +16,6 @@ data/raw/*
 data/interim/*
 data/processed/*
 !data/**/.gitkeep
+artifacts/models/tuned/
 .idea/
 .vscode/

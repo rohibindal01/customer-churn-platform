@@ -1,0 +1,20 @@
+TUNED MODELS (5-fold CV on the training split, best candidate chosen by PR-AUC)
+              model search  cands  cv_pr_auc     +-  base_pr_auc  delta_pr_auc  cv_roc_auc  base_roc_auc  delta_roc_auc  overfit_gap  minutes
+  gradient_boosting random     40     0.6772 0.0156       0.6667        0.0106      0.8509        0.8444         0.0065       0.0556   3.0709
+            xgboost random     40     0.6770 0.0187       0.6596        0.0174      0.8511        0.8391         0.0120       0.0261   1.0231
+           catboost random     40     0.6749 0.0163       0.6560        0.0189      0.8514        0.8419         0.0094       0.0656   4.3390
+           adaboost random     40     0.6734 0.0217       0.6664        0.0070      0.8522        0.8499         0.0022       0.0161   2.8911
+logistic_regression   grid     24     0.6718 0.0247       0.6716        0.0002      0.8491        0.8491         0.0000       0.0098   0.5594
+
+delta       = tuned CV score minus the Milestone 4 baseline (strategy 'none', same folds)
+overfit_gap = training PR-AUC minus CV PR-AUC of the chosen candidate
+
+BEST PARAMETERS
+  gradient_boosting: {"model__learning_rate": 0.020656528828240196, "model__max_depth": 3, "model__max_features": "sqrt", "model__min_samples_leaf": 50, "model__n_estimators": 400, "model__subsample": 0.9933692563579372}
+  xgboost: {"model__colsample_bytree": 0.6521211214797689, "model__gamma": 1.0495128632644757, "model__learning_rate": 0.03647316284911211, "model__max_depth": 2, "model__min_child_weight": 4.8166775532562545, "model__n_estimators": 200, "model__reg_alpha": 0.0014880409690505125, "model__reg_lambda": 17.403662685854034, "model__subsample": 0.6931085361721216}
+  catboost: {"model__depth": 5, "model__iterations": 400, "model__l2_leaf_reg": 4.983319160125722, "model__learning_rate": 0.014308552498147852, "model__random_strength": 1.42648957444599}
+  adaboost: {"model__estimator": "DecisionTreeClassifier(max_depth=1)", "model__learning_rate": 0.28788057183089233, "model__n_estimators": 500}
+  logistic_regression: {"model__C": 3.0, "model__l1_ratio": 0.5, "model__max_iter": 5000, "model__solver": "saga"}
+
+Note: the best of many candidates, scored on the same folds, is slightly optimistic.
+The validation split in Milestone 6 gives the honest check.
