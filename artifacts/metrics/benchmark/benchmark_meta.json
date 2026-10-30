@@ -1,5 +1,5 @@
 {
-  "created_utc": "2026-10-30T18:05:46+00:00",
+  "created_utc": "2026-10-30T18:33:56+00:00",
   "random_seed": 42,
   "n_splits": 5,
   "n_jobs": 1,
@@ -27,10 +27,10 @@
     "random_under",
     "smote"
   ],
-  "runs_ok": 0,
+  "runs_ok": 61,
   "runs_not_applicable": 4,
-  "runs_failed": 61,
-  "elapsed_seconds": 0.7,
+  "runs_failed": 0,
+  "elapsed_seconds": 424.9,
   "python": "3.12.0",
   "platform": "Windows-11-10.0.26200-SP0",
   "versions": {

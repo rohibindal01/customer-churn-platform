@@ -4,17 +4,22 @@ import pandas as pd
 import pytest
 from imblearn.over_sampling import SMOTE, RandomOverSampler
 from imblearn.under_sampling import RandomUnderSampler
+from sklearn.pipeline import Pipeline as SkPipeline
 
+from churn.features.preprocessing import get_feature_names
 from churn.features.splitting import split_xy
 from churn.models.evaluation import get_scores
 from churn.models.imbalance import STRATEGIES, build_sampler
 from churn.models.pipeline import (
+    FEATURE_STEP_NAMES,
     NotApplicableError,
     build_model_pipeline,
     check_applicable,
     compute_pos_weight,
 )
 from churn.models.registry import list_model_keys
+
+FEATURES = list(FEATURE_STEP_NAMES)
 
 
 def test_there_are_five_strategies():
@@ -48,16 +53,23 @@ def test_class_weight_applicable_for_logistic_regression():
 @pytest.mark.parametrize(
     "strategy, expected",
     [
-        ("none", ["features", "model"]),
-        ("class_weight", ["features", "model"]),
-        ("random_over", ["features", "sampler", "model"]),
-        ("random_under", ["features", "sampler", "model"]),
-        ("smote", ["features", "sampler", "model"]),
+        ("none", [*FEATURES, "model"]),
+        ("class_weight", [*FEATURES, "model"]),
+        ("random_over", [*FEATURES, "sampler", "model"]),
+        ("random_under", [*FEATURES, "sampler", "model"]),
+        ("smote", [*FEATURES, "sampler", "model"]),
     ],
 )
 def test_pipeline_step_order(strategy, expected):
     pipe = build_model_pipeline("logistic_regression", strategy)
     assert [name for name, _ in pipe.steps] == expected
+
+
+@pytest.mark.parametrize("strategy", STRATEGIES)
+def test_no_nested_pipelines(strategy):
+    # imblearn rejects a Pipeline as an intermediate step; keep it flat.
+    pipe = build_model_pipeline("logistic_regression", strategy)
+    assert not any(isinstance(step, SkPipeline) for _, step in pipe.steps)
 
 
 def test_class_weight_reaches_the_model():
@@ -74,6 +86,13 @@ def test_sampler_is_skipped_at_prediction_time(synthetic_df):
     pipe = build_model_pipeline("logistic_regression", "random_under", seed=42)
     pipe.fit(X.iloc[:300], y.iloc[:300])
     assert len(pipe.predict(X.iloc[300:])) == 100
+
+
+def test_feature_names_available_from_model_pipeline(synthetic_df):
+    X, y = split_xy(synthetic_df)
+    pipe = build_model_pipeline("logistic_regression", "none", seed=42).fit(X, y)
+    names = get_feature_names(pipe)
+    assert len(names) == len(pipe.named_steps["model"].coef_.ravel())
 
 
 def test_pos_weight_is_negatives_over_positives():

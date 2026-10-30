@@ -35,11 +35,11 @@ _PACKAGES = ["scikit-learn", "imbalanced-learn", "xgboost", "lightgbm",
 
 @dataclass
 class BenchmarkResult:
-    folds: pd.DataFrame          # one row per model, strategy and fold
-    summary: pd.DataFrame        # mean and std over folds, one row per run
-    skipped: pd.DataFrame        # not applicable or failed runs, with reasons
-    oof_scores: dict             # "model__strategy" -> out-of-fold scores
-    oof_pred: dict               # "model__strategy" -> out-of-fold 0/1 labels
+    folds: pd.DataFrame      # one row per model, strategy and fold
+    summary: pd.DataFrame    # mean and std over folds, one row per run
+    skipped: pd.DataFrame    # not applicable or failed runs, with reasons
+    oof_scores: dict         # "model__strategy" -> out-of-fold scores
+    oof_pred: dict           # "model__strategy" -> out-of-fold 0/1 labels
     y_true: np.ndarray
     meta: dict
 
@@ -212,6 +212,7 @@ def benchmark_models(
     }
     if extra_meta:
         meta.update(extra_meta)
+
     logger.info("Benchmark finished in %.1f min: %d ok, %d not applicable, %d failed",
                 elapsed / 60, meta["runs_ok"], meta["runs_not_applicable"], meta["runs_failed"])
     return BenchmarkResult(folds, summary, skipped, oof_scores, oof_pred, labels, meta)
@@ -231,19 +232,37 @@ def save_benchmark(result: BenchmarkResult, out_dir: Path | str) -> dict[str, Pa
     result.folds.to_csv(paths["folds"], index=False)
     result.summary.to_csv(paths["summary"], index=False)
     result.skipped.to_csv(paths["skipped"], index=False)
+
     arrays = {"y_true": result.y_true.astype(np.int8)}
     arrays.update(result.oof_scores)
     arrays.update({f"{k}__pred": v for k, v in result.oof_pred.items()})
     np.savez_compressed(paths["oof"], **arrays)
+
     paths["meta"].write_text(json.dumps(result.meta, indent=2), encoding="utf-8")
     return paths
 
 
 def format_report(result: BenchmarkResult, top_n: int = 15) -> str:
-    """Plain-text ranking tables for the console and a saved .txt file."""
+    """Plain-text ranking tables for the console and a saved .txt file.
+
+    Failed runs are always listed, even when no run succeeded, so the cause
+    of a failure is never hidden.
+    """
+    meta = result.meta
+    counts = (
+        f"Runs: {meta['runs_ok']} ok, {meta['runs_not_applicable']} not applicable, "
+        f"{meta['runs_failed']} failed. Elapsed: {meta['elapsed_seconds']} seconds."
+    )
+    failed = result.skipped[result.skipped["status"] == "failed"]
+    failure_lines: list[str] = []
+    if not failed.empty:
+        failure_lines = ["", "FAILED RUNS"]
+        failure_lines += [f"  {r.model} + {r.strategy}: {r.reason}" for r in failed.itertuples()]
+
     summary = result.summary
     if summary.empty:
-        return "No successful runs."
+        return "\n".join(["No successful runs.", counts, *failure_lines])
+
     rename = {
         "roc_auc_mean": "roc_auc", "roc_auc_std": "+-", "pr_auc_mean": "pr_auc",
         "recall_mean": "recall", "precision_mean": "precision", "f1_mean": "f1",
@@ -257,6 +276,7 @@ def format_report(result: BenchmarkResult, top_n: int = 15) -> str:
                                      "precision_mean", "f1_mean"]]
         .mean().rename(columns=rename).round(4)
     )
+
     lines = [
         f"TOP {top_n} RUNS BY MEAN ROC-AUC (5-fold CV on the training split)",
         top.to_string(index=False),
@@ -267,12 +287,7 @@ def format_report(result: BenchmarkResult, top_n: int = 15) -> str:
         "AVERAGE BY STRATEGY (only over models that ran it, so not a perfectly fair comparison)",
         by_strategy.to_string(),
         "",
-        f"Runs: {result.meta['runs_ok']} ok, {result.meta['runs_not_applicable']} "
-        f"not applicable, {result.meta['runs_failed']} failed. "
-        f"Elapsed: {result.meta['elapsed_seconds']} seconds.",
+        counts,
+        *failure_lines,
     ]
-    failed = result.skipped[result.skipped["status"] == "failed"]
-    if not failed.empty:
-        lines += ["", "FAILED RUNS"]
-        lines += [f"  {r.model} + {r.strategy}: {r.reason}" for r in failed.itertuples()]
     return "\n".join(lines)

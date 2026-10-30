@@ -1,7 +1,11 @@
-"""Assemble one complete pipeline: features -> (sampler) -> model.
+"""Assemble one complete, flat pipeline:
+clean -> engineer -> preprocess -> (sampler) -> model.
 
-The feature pipeline comes from Milestone 3 and is fitted inside every
-cross-validation fold, so nothing is learned from validation rows.
+imblearn's Pipeline does not accept another Pipeline as an intermediate
+step, because it must see every sampler directly to skip it at prediction
+time. So the three feature steps from Milestone 3 are placed directly in
+the imblearn Pipeline. They are still fitted inside every cross-validation
+fold, so nothing is learned from validation rows.
 """
 from __future__ import annotations
 
@@ -13,9 +17,22 @@ from churn.features.preprocessing import build_feature_pipeline
 from churn.models.imbalance import build_sampler, uses_class_weight, validate_strategy
 from churn.models.registry import build_estimator, get_spec
 
+FEATURE_STEP_NAMES = ("clean", "engineer", "preprocess")
+
 
 class NotApplicableError(ValueError):
     """Raised when a model and strategy cannot be combined."""
+
+
+def feature_steps() -> list[tuple[str, object]]:
+    """Fresh, unfitted feature steps taken out of the Milestone 3 pipeline."""
+    steps = list(build_feature_pipeline().steps)
+    names = tuple(name for name, _ in steps)
+    if names != FEATURE_STEP_NAMES:
+        raise RuntimeError(
+            f"Unexpected feature steps {names}; expected {FEATURE_STEP_NAMES}"
+        )
+    return steps
 
 
 def compute_pos_weight(y) -> float:
@@ -43,16 +60,18 @@ def build_model_pipeline(
     seed: int | None = None,
     pos_weight: float = 1.0,
 ) -> ImbPipeline:
-    """Build an unfitted pipeline for one model and one imbalance strategy."""
+    """Build an unfitted, flat pipeline for one model and one imbalance strategy."""
     reason = check_applicable(model_key, strategy)
     if reason:
         raise NotApplicableError(f"{model_key} + {strategy}: {reason}")
-    seed = get_settings().random_seed if seed is None else seed
 
-    steps = [("features", build_feature_pipeline())]
+    seed = get_settings().random_seed if seed is None else seed
+    steps = feature_steps()
+
     sampler = build_sampler(strategy, seed)
     if sampler is not None:
         steps.append(("sampler", sampler))
+
     estimator = build_estimator(
         model_key, seed, weighted=uses_class_weight(strategy), pos_weight=pos_weight
     )
