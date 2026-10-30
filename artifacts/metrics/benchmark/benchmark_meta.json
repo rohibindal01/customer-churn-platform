@@ -1,0 +1,47 @@
+{
+  "created_utc": "2026-10-30T18:05:46+00:00",
+  "random_seed": 42,
+  "n_splits": 5,
+  "n_jobs": 1,
+  "rows": 4225,
+  "churn_rate_pct": 26.53,
+  "models": [
+    "logistic_regression",
+    "knn",
+    "decision_tree",
+    "naive_bayes",
+    "svm",
+    "random_forest",
+    "extra_trees",
+    "adaboost",
+    "gradient_boosting",
+    "hist_gradient_boosting",
+    "xgboost",
+    "lightgbm",
+    "catboost"
+  ],
+  "strategies": [
+    "none",
+    "class_weight",
+    "random_over",
+    "random_under",
+    "smote"
+  ],
+  "runs_ok": 0,
+  "runs_not_applicable": 4,
+  "runs_failed": 61,
+  "elapsed_seconds": 0.7,
+  "python": "3.12.0",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "versions": {
+    "scikit-learn": "1.9.1",
+    "imbalanced-learn": "0.14.2",
+    "xgboost": "3.4.1",
+    "lightgbm": "4.7.0",
+    "catboost": "1.2.10",
+    "pandas": "3.1.0",
+    "numpy": "2.5.4"
+  },
+  "source_fingerprint": "88be4b93fbe0",
+  "split": "train"
+}

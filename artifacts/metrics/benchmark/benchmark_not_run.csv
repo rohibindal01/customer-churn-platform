@@ -1,0 +1,66 @@
+model,strategy,status,reason
+logistic_regression,none,failed,TypeError: All intermediate steps of the chain should not be Pipelines
+logistic_regression,class_weight,failed,TypeError: All intermediate steps of the chain should not be Pipelines
+logistic_regression,random_over,failed,TypeError: All intermediate steps of the chain should not be Pipelines
+logistic_regression,random_under,failed,TypeError: All intermediate steps of the chain should not be Pipelines
+logistic_regression,smote,failed,TypeError: All intermediate steps of the chain should not be Pipelines
+knn,none,failed,TypeError: All intermediate steps of the chain should not be Pipelines
+knn,class_weight,not_applicable,"KNeighborsClassifier cannot re-weight votes by class, so the class_weight strategy does not apply."
+knn,random_over,failed,TypeError: All intermediate steps of the chain should not be Pipelines
+knn,random_under,failed,TypeError: All intermediate steps of the chain should not be Pipelines
+knn,smote,failed,TypeError: All intermediate steps of the chain should not be Pipelines
+decision_tree,none,failed,TypeError: All intermediate steps of the chain should not be Pipelines
+decision_tree,class_weight,failed,TypeError: All intermediate steps of the chain should not be Pipelines
+decision_tree,random_over,failed,TypeError: All intermediate steps of the chain should not be Pipelines
+decision_tree,random_under,failed,TypeError: All intermediate steps of the chain should not be Pipelines
+decision_tree,smote,failed,TypeError: All intermediate steps of the chain should not be Pipelines
+naive_bayes,none,failed,TypeError: All intermediate steps of the chain should not be Pipelines
+naive_bayes,class_weight,not_applicable,"GaussianNB has only fixed class priors, no class_weight parameter, so the class_weight strategy does not apply."
+naive_bayes,random_over,failed,TypeError: All intermediate steps of the chain should not be Pipelines
+naive_bayes,random_under,failed,TypeError: All intermediate steps of the chain should not be Pipelines
+naive_bayes,smote,failed,TypeError: All intermediate steps of the chain should not be Pipelines
+svm,none,failed,TypeError: All intermediate steps of the chain should not be Pipelines
+svm,class_weight,failed,TypeError: All intermediate steps of the chain should not be Pipelines
+svm,random_over,failed,TypeError: All intermediate steps of the chain should not be Pipelines
+svm,random_under,failed,TypeError: All intermediate steps of the chain should not be Pipelines
+svm,smote,failed,TypeError: All intermediate steps of the chain should not be Pipelines
+random_forest,none,failed,TypeError: All intermediate steps of the chain should not be Pipelines
+random_forest,class_weight,failed,TypeError: All intermediate steps of the chain should not be Pipelines
+random_forest,random_over,failed,TypeError: All intermediate steps of the chain should not be Pipelines
+random_forest,random_under,failed,TypeError: All intermediate steps of the chain should not be Pipelines
+random_forest,smote,failed,TypeError: All intermediate steps of the chain should not be Pipelines
+extra_trees,none,failed,TypeError: All intermediate steps of the chain should not be Pipelines
+extra_trees,class_weight,failed,TypeError: All intermediate steps of the chain should not be Pipelines
+extra_trees,random_over,failed,TypeError: All intermediate steps of the chain should not be Pipelines
+extra_trees,random_under,failed,TypeError: All intermediate steps of the chain should not be Pipelines
+extra_trees,smote,failed,TypeError: All intermediate steps of the chain should not be Pipelines
+adaboost,none,failed,TypeError: All intermediate steps of the chain should not be Pipelines
+adaboost,class_weight,not_applicable,"AdaBoostClassifier has no class_weight parameter, so the class_weight strategy does not apply."
+adaboost,random_over,failed,TypeError: All intermediate steps of the chain should not be Pipelines
+adaboost,random_under,failed,TypeError: All intermediate steps of the chain should not be Pipelines
+adaboost,smote,failed,TypeError: All intermediate steps of the chain should not be Pipelines
+gradient_boosting,none,failed,TypeError: All intermediate steps of the chain should not be Pipelines
+gradient_boosting,class_weight,not_applicable,"GradientBoostingClassifier has no class_weight parameter, so the class_weight strategy does not apply."
+gradient_boosting,random_over,failed,TypeError: All intermediate steps of the chain should not be Pipelines
+gradient_boosting,random_under,failed,TypeError: All intermediate steps of the chain should not be Pipelines
+gradient_boosting,smote,failed,TypeError: All intermediate steps of the chain should not be Pipelines
+hist_gradient_boosting,none,failed,TypeError: All intermediate steps of the chain should not be Pipelines
+hist_gradient_boosting,class_weight,failed,TypeError: All intermediate steps of the chain should not be Pipelines
+hist_gradient_boosting,random_over,failed,TypeError: All intermediate steps of the chain should not be Pipelines
+hist_gradient_boosting,random_under,failed,TypeError: All intermediate steps of the chain should not be Pipelines
+hist_gradient_boosting,smote,failed,TypeError: All intermediate steps of the chain should not be Pipelines
+xgboost,none,failed,TypeError: All intermediate steps of the chain should not be Pipelines
+xgboost,class_weight,failed,TypeError: All intermediate steps of the chain should not be Pipelines
+xgboost,random_over,failed,TypeError: All intermediate steps of the chain should not be Pipelines
+xgboost,random_under,failed,TypeError: All intermediate steps of the chain should not be Pipelines
+xgboost,smote,failed,TypeError: All intermediate steps of the chain should not be Pipelines
+lightgbm,none,failed,TypeError: All intermediate steps of the chain should not be Pipelines
+lightgbm,class_weight,failed,TypeError: All intermediate steps of the chain should not be Pipelines
+lightgbm,random_over,failed,TypeError: All intermediate steps of the chain should not be Pipelines
+lightgbm,random_under,failed,TypeError: All intermediate steps of the chain should not be Pipelines
+lightgbm,smote,failed,TypeError: All intermediate steps of the chain should not be Pipelines
+catboost,none,failed,TypeError: All intermediate steps of the chain should not be Pipelines
+catboost,class_weight,failed,TypeError: All intermediate steps of the chain should not be Pipelines
+catboost,random_over,failed,TypeError: All intermediate steps of the chain should not be Pipelines
+catboost,random_under,failed,TypeError: All intermediate steps of the chain should not be Pipelines
+catboost,smote,failed,TypeError: All intermediate steps of the chain should not be Pipelines
