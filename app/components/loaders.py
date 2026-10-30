@@ -7,6 +7,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+import numpy as np
 import pandas as pd
 import streamlit as st
 
@@ -41,6 +42,16 @@ def load_csv(relative: str) -> pd.DataFrame | None:
 def load_json(relative: str) -> dict | None:
     path = artifact_path(relative)
     return json.loads(path.read_text(encoding="utf-8")) if path.exists() else None
+
+
+@st.cache_data(show_spinner=False)
+def load_npz(relative: str) -> dict | None:
+    """All arrays in a .npz file. allow_pickle=False: loading never runs code."""
+    path = artifact_path(relative)
+    if not path.exists():
+        return None
+    with np.load(path, allow_pickle=False) as data:
+        return {key: data[key] for key in data.files}
 
 
 @st.cache_data(show_spinner=False)
