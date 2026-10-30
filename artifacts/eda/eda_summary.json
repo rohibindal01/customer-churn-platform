@@ -1,0 +1,64 @@
+{
+  "source_file": "WA_Fn-UseC_-Telco-Customer-Churn.csv",
+  "fingerprint": "88be4b93fbe0",
+  "rows": 7043,
+  "columns": 21,
+  "churned": 1869,
+  "retained": 5174,
+  "churn_rate_pct": 26.536987079369588,
+  "duplicate_rows": 0,
+  "duplicate_ids": 0,
+  "blank_total_charges": 11,
+  "blank_total_charges_all_zero_tenure": true,
+  "top_categorical_drivers": [
+    {
+      "feature": "Contract",
+      "cramers_v": 0.4101156965761409
+    },
+    {
+      "feature": "OnlineSecurity",
+      "cramers_v": 0.3474004326740552
+    },
+    {
+      "feature": "TechSupport",
+      "cramers_v": 0.3429161982469257
+    },
+    {
+      "feature": "InternetService",
+      "cramers_v": 0.32245455521230887
+    },
+    {
+      "feature": "PaymentMethod",
+      "cramers_v": 0.30335862555407056
+    }
+  ],
+  "numeric_tests": [
+    {
+      "feature": "tenure",
+      "median_churned": 10.0,
+      "median_retained": 38.0,
+      "mean_churned": 17.979133226324237,
+      "mean_retained": 37.56996521066873,
+      "p_value": 2.419635517951866e-208,
+      "rank_biserial": -0.4797343510572577
+    },
+    {
+      "feature": "MonthlyCharges",
+      "median_churned": 79.65,
+      "median_retained": 64.42500000000001,
+      "mean_churned": 74.44133226324237,
+      "mean_retained": 61.26512369540008,
+      "p_value": 3.311627651988585e-54,
+      "rank_biserial": 0.24157137914125104
+    },
+    {
+      "feature": "TotalCharges",
+      "median_churned": 703.55,
+      "median_retained": 1683.6,
+      "mean_churned": 1531.7960941680042,
+      "mean_retained": 2555.344141003293,
+      "p_value": 1.9959848938845826e-84,
+      "rank_biserial": -0.30346363965438317
+    }
+  ]
+}

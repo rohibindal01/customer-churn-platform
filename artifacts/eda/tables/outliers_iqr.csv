@@ -1,0 +1,4 @@
+column,q1,q3,lower_fence,upper_fence,outliers,outlier_pct
+tenure,9.0,55.0,-60.0,124.0,0,0.0
+MonthlyCharges,35.5,89.85,-46.02499999999999,171.375,0,0.0
+TotalCharges,401.45,3794.7375,-4688.481250000001,8884.66875,0,0.0
