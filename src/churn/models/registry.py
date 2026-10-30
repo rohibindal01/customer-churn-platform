@@ -3,16 +3,17 @@
 Every model is created through build_estimator(), so seeds, thread counts
 and class-weight handling are decided in exactly one place. These are
 reasonable baseline settings, not tuned ones. Tuning happens in Milestone 5.
-
 All models run single-threaded (n_jobs=1) so training times are comparable.
+
+XGBoost, LightGBM and CatBoost are imported inside their builder functions,
+so importing this registry (for example for model names in the app) never
+requires the training-only libraries.
 """
 from __future__ import annotations
 
 from dataclasses import dataclass
 from typing import Callable
 
-from catboost import CatBoostClassifier
-from lightgbm import LGBMClassifier
 from sklearn.base import BaseEstimator
 from sklearn.ensemble import (
     AdaBoostClassifier,
@@ -26,7 +27,6 @@ from sklearn.naive_bayes import GaussianNB
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.svm import SVC
 from sklearn.tree import DecisionTreeClassifier
-from xgboost import XGBClassifier
 
 # factory(seed, weighted, pos_weight) -> unfitted estimator
 #   weighted   : True when the "class_weight" strategy is active
@@ -122,6 +122,8 @@ def _hist_gradient_boosting(seed: int, weighted: bool, pos_weight: float) -> Bas
 
 
 def _xgboost(seed: int, weighted: bool, pos_weight: float) -> BaseEstimator:
+    from xgboost import XGBClassifier
+
     return XGBClassifier(
         n_estimators=300,
         learning_rate=0.05,
@@ -137,6 +139,8 @@ def _xgboost(seed: int, weighted: bool, pos_weight: float) -> BaseEstimator:
 
 
 def _lightgbm(seed: int, weighted: bool, pos_weight: float) -> BaseEstimator:
+    from lightgbm import LGBMClassifier
+
     return LGBMClassifier(
         n_estimators=300,
         learning_rate=0.05,
@@ -152,6 +156,8 @@ def _lightgbm(seed: int, weighted: bool, pos_weight: float) -> BaseEstimator:
 
 
 def _catboost(seed: int, weighted: bool, pos_weight: float) -> BaseEstimator:
+    from catboost import CatBoostClassifier
+
     return CatBoostClassifier(
         iterations=300,
         learning_rate=0.05,

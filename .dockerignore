@@ -1,0 +1,19 @@
+# Allowlist: exclude everything, then add back only what the image needs.
+*
+!src
+!app
+!.streamlit
+!artifacts
+!config.yaml
+!pyproject.toml
+!requirements-app.txt
+!requirements-lock.txt
+
+# Not needed at run time (training-only models, static plots, test output).
+artifacts/models/tuned
+artifacts/models/candidates
+artifacts/plots
+artifacts/eda
+artifacts/tests
+**/__pycache__
+**/*.pyc

@@ -1,0 +1,16 @@
+# Runtime dependencies of the Streamlit app (Docker image).
+# Versions come from requirements-lock.txt, used as a constraints file,
+# so the image matches the environment that saved the model.
+# Training-only packages (xgboost, lightgbm, catboost, mlflow, seaborn,
+# kaggle, pytest) are deliberately absent.
+numpy
+pandas
+scipy
+scikit-learn
+imbalanced-learn
+joblib
+pyyaml
+matplotlib
+plotly
+streamlit
+shap

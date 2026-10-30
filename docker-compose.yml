@@ -1,0 +1,24 @@
+# One-command start:  docker compose up -d --build
+services:
+  churn-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: churn-intelligence:latest
+    container_name: churn-intelligence
+    ports:
+      - "8501:8501"
+    environment:
+      CHURN_LOG_LEVEL: ${CHURN_LOG_LEVEL:-INFO}
+    volumes:
+      - churn-logs:/app/logs
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import sys, urllib.request; sys.exit(0 if urllib.request.urlopen('http://localhost:8501/_stcore/health', timeout=4).read().strip() == b'ok' else 1)"]
+      interval: 30s
+      timeout: 5s
+      start_period: 60s
+      retries: 3
+
+volumes:
+  churn-logs:
