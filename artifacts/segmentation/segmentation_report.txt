@@ -1,0 +1,46 @@
+SEGMENTATION REPORT (K-Means on the training split; churn label NOT used to build segments)
+Inputs: tenure, MonthlyCharges, log_TotalCharges, addon_count, contract_level, internet_dsl, internet_fiber, internet_none (standardized).
+
+1. CHOOSING k
+ k    inertia  silhouette  calinski_harabasz  davies_bouldin  stability_ari  smallest_cluster_pct
+ 2 23218.7183      0.3044          1924.5163          1.4431         0.8546               43.2663
+ 3 15251.6189      0.4329          2567.3099          1.0784         0.9330               21.4911
+ 4 11187.9767      0.4220          2843.7726          0.9201         0.8614               21.4911
+ 5  8081.4817      0.4561          3357.4334          0.8059         0.9056               16.3314
+ 6  6448.1866      0.4612          3579.2221          0.7783         0.9165               10.7219
+ 7  5459.3624      0.4380          3649.5077          0.8143         0.9013               10.7219
+ 8  4701.3500      0.4181          3728.6917          0.8793         0.9402                9.9645
+ 9  4322.2217      0.3963          3594.2561          0.9335         0.8259                8.4734
+10  3976.9527      0.3847          3512.0210          0.9489         0.8468                6.4379
+
+   Chosen k = 6: highest silhouette (0.461) for k in 3..8 with stability >= 0.8 and every cluster >= 5% of customers.
+   Cluster structure: REASONABLE (silhouette 0.461; above 0.5 strong, 0.25 to 0.5 reasonable, below 0.25 weak).
+
+2. METHOD COMPARISON (same scaled data; DBSCAN silhouette excludes noise points)
+                           method  clusters  noise_pct  silhouette  ari_vs_kmeans
+                    K-Means (k=6)         6     0.0000      0.4612         1.0000
+         Hierarchical, Ward (k=6)         6     0.0000      0.4425         0.8569
+DBSCAN (eps=0.58, min_samples=16)         9     3.6923      0.3489         0.6559
+
+3. SEGMENT PROFILES (training split; overall churn 26.5%; lift = segment churn / overall churn)
+ segment                                                  name  customers  share_pct  tenure_mean  monthly_mean  addons_mean  month_to_month_pct  fiber_pct  no_internet_pct  no_security_or_support_pct  churn_rate_pct  lift  mean_predicted_pct
+       0       S1: New, low-spend, no internet, month-to-month        453      10.72        10.53         20.47         0.00               70.20        0.0            100.0                        0.00           13.69  0.52               13.54
+       1       S2: Established, low-spend, DSL, month-to-month        784      18.56        13.85         49.30         1.55               87.76        0.0              0.0                       51.91           30.48  1.15               31.27
+       2    S3: Established, high-spend, fiber, month-to-month       1040      24.62        14.36         84.11         1.53               97.98      100.0              0.0                       77.21           58.85  2.22               58.68
+       3   S4: Long-standing, low-spend, no internet, two-year        455      10.77        49.13         21.78         0.00                0.22        0.0            100.0                        0.00            0.88  0.03                1.07
+       4           S5: Long-standing, mid-spend, DSL, two-year        690      16.33        54.88         68.55         4.03                6.67        0.0              0.0                        9.42            5.22  0.20                4.35
+       5 S6: Long-standing, high-spend, fiber, mixed contracts        803      19.01        56.86        100.97         3.85               31.63      100.0              0.0                       31.76           20.92  0.79               21.09
+
+4. DO THE PROFILES HOLD ON UNSEEN CUSTOMERS? (validation split assigned to the same segments)
+ segment                                                  name  customers_train  churn_rate_pct_train  customers_validation  churn_rate_pct_validation  churn_gap_pts
+       0       S1: New, low-spend, no internet, month-to-month              453                 13.69                   140                      12.14          -1.54
+       1       S2: Established, low-spend, DSL, month-to-month              784                 30.48                   254                      29.53          -0.96
+       2    S3: Established, high-spend, fiber, month-to-month             1040                 58.85                   342                      59.65           0.80
+       3   S4: Long-standing, low-spend, no internet, two-year              455                  0.88                   166                       3.01           2.13
+       4           S5: Long-standing, mid-spend, DSL, two-year              690                  5.22                   209                       5.74           0.52
+       5 S6: Long-standing, high-spend, fiber, mixed contracts              803                 20.92                   298                      20.47          -0.45
+
+CAVEATS
+  Segments describe customers; they are not causes of churn.
+  A segment's churn rate mixes the effects of all its traits.
+  Names are generated from segment averages; individual customers vary.

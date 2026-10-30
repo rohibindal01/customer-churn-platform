@@ -1,0 +1,37 @@
+{
+  "created_utc": "2026-10-30T20:30:26+00:00",
+  "k": 6,
+  "choice": {
+    "k": 6,
+    "silhouette": 0.4612144674130088,
+    "structure": "reasonable",
+    "reason": "highest silhouette (0.461) for k in 3..8 with stability >= 0.8 and every cluster >= 5% of customers",
+    "constraints_met": true
+  },
+  "features": [
+    "tenure",
+    "MonthlyCharges",
+    "log_TotalCharges",
+    "addon_count",
+    "contract_level",
+    "internet_dsl",
+    "internet_fiber",
+    "internet_none"
+  ],
+  "names": {
+    "0": "S1: New, low-spend, no internet, month-to-month",
+    "1": "S2: Established, low-spend, DSL, month-to-month",
+    "2": "S3: Established, high-spend, fiber, month-to-month",
+    "3": "S4: Long-standing, low-spend, no internet, two-year",
+    "4": "S5: Long-standing, mid-spend, DSL, two-year",
+    "5": "S6: Long-standing, high-spend, fiber, mixed contracts"
+  },
+  "spend_cuts": [
+    50.6,
+    83.75
+  ],
+  "fitted_on": "train split",
+  "churn_label_used_for_fitting": false,
+  "random_seed": 42,
+  "source_fingerprint": "88be4b93fbe0"
+}

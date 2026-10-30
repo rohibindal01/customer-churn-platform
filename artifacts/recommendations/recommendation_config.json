@@ -1,0 +1,125 @@
+{
+  "created_utc": "2026-10-30T20:30:46+00:00",
+  "band_thresholds": {
+    "watch": 0.24,
+    "decision": 0.4,
+    "critical": 0.7
+  },
+  "rule_config": {
+    "new_customer_months": 12.0,
+    "high_spend_monthly": 89.75,
+    "charge_increase": 5.0,
+    "min_band_for_action": "Medium"
+  },
+  "rules": [
+    {
+      "rule_id": "contract_incentive",
+      "title": "Contract incentive",
+      "family": "Contract",
+      "basis": "model driver",
+      "priority": 1,
+      "bands": [
+        "High",
+        "Critical"
+      ],
+      "action": "Offer a discounted one- or two-year contract, for example a price lock.",
+      "rationale": "In the final model, month-to-month contracts raise predicted risk and two-year contracts lower it."
+    },
+    {
+      "rule_id": "onboarding",
+      "title": "New-customer onboarding",
+      "family": "Tenure",
+      "basis": "model driver",
+      "priority": 1,
+      "bands": [
+        "Medium",
+        "High",
+        "Critical"
+      ],
+      "action": "Schedule an onboarding check-in: service setup, first-bill walkthrough, satisfaction call.",
+      "rationale": "Short tenure is the final model's largest single risk driver."
+    },
+    {
+      "rule_id": "security_support_trial",
+      "title": "Security or support trial",
+      "family": "Security and support",
+      "basis": "model driver",
+      "priority": 2,
+      "bands": [
+        "Medium",
+        "High",
+        "Critical"
+      ],
+      "action": "Offer a free trial of Online Security or Tech Support.",
+      "rationale": "Internet customers with neither security nor support carry higher predicted risk."
+    },
+    {
+      "rule_id": "fiber_service_review",
+      "title": "Fiber service review",
+      "family": "Internet service",
+      "basis": "model driver",
+      "priority": 3,
+      "bands": [
+        "High",
+        "Critical"
+      ],
+      "action": "Run a proactive service-quality check and review whether the price fits the plan.",
+      "rationale": "Fiber raises predicted risk. The data cannot say whether price or quality drives this, so investigate before offering discounts."
+    },
+    {
+      "rule_id": "high_value_loyalty",
+      "title": "Protect a high-value customer",
+      "family": "Spend",
+      "basis": "business heuristic",
+      "priority": 2,
+      "bands": [
+        "High",
+        "Critical"
+      ],
+      "action": "Offer a loyalty benefit or priority service; involve a senior retention agent.",
+      "rationale": "High monthly revenue is at risk, so a successful save is worth more."
+    },
+    {
+      "rule_id": "bill_increase_review",
+      "title": "Review a recent bill increase",
+      "family": "Spend",
+      "basis": "business heuristic",
+      "priority": 3,
+      "bands": [
+        "Medium",
+        "High",
+        "Critical"
+      ],
+      "action": "Review the plan: the current bill is above the customer's own historical average.",
+      "rationale": "A bill rising above a customer's usual spend can prompt comparison shopping."
+    },
+    {
+      "rule_id": "autopay_nudge",
+      "title": "Move to automatic payment",
+      "family": "Billing and payment",
+      "basis": "business heuristic",
+      "priority": 5,
+      "bands": [
+        "Medium",
+        "High",
+        "Critical"
+      ],
+      "action": "Encourage automatic payment (bank transfer or card), for example with a small credit.",
+      "rationale": "Low-cost friction reduction. Payment method adds little to the final model's predictions, so this is not a model finding."
+    },
+    {
+      "rule_id": "senior_assist",
+      "title": "Assisted support",
+      "family": "Household",
+      "basis": "business heuristic",
+      "priority": 4,
+      "bands": [
+        "High",
+        "Critical"
+      ],
+      "action": "Offer an assisted support channel, such as a dedicated phone line or in-home setup.",
+      "rationale": "A service-quality suggestion, not a model finding."
+    }
+  ],
+  "disclaimer": "Recommendations are rule-based suggestions, separate from the model's prediction. Their effect on churn has not been measured; test them, for example with a controlled A/B test, before rolling them out."
+}

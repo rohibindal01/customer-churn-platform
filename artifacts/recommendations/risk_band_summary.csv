@@ -1,0 +1,5 @@
+band,customers,share_pct,mean_predicted_pct,observed_churn_pct,suggested_handling
+Low,797,56.56493967352733,7.658766032309086,9.159347553324968,No proactive action; standard service.
+Medium,205,14.54932576295245,31.398705693221974,26.82926829268293,Watch list: low-cost touches only.
+High,310,22.0014194464159,54.72770376796608,55.16129032258065,Contact with a retention offer.
+Critical,97,6.88431511710433,76.62189850592692,77.31958762886599,"Contact first, with a senior retention agent."

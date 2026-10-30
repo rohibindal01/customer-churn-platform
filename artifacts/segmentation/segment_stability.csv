@@ -1,0 +1,7 @@
+segment,name,customers_train,churn_rate_pct_train,customers_validation,churn_rate_pct_validation,churn_gap_pts
+0,"S1: New, low-spend, no internet, month-to-month",453,13.686534216335541,140,12.142857142857142,-1.543677073478399
+1,"S2: Established, low-spend, DSL, month-to-month",784,30.484693877551024,254,29.527559055118108,-0.9571348224329164
+2,"S3: Established, high-spend, fiber, month-to-month",1040,58.84615384615385,342,59.64912280701754,0.8029689608636943
+3,"S4: Long-standing, low-spend, no internet, two-year",455,0.8791208791208791,166,3.0120481927710845,2.1329273136502054
+4,"S5: Long-standing, mid-spend, DSL, two-year",690,5.217391304347826,209,5.741626794258373,0.5242354899105468
+5,"S6: Long-standing, high-spend, fiber, mixed contracts",803,20.921544209215444,298,20.469798657718123,-0.45174555149732143

@@ -1,0 +1,4 @@
+method,clusters,noise_pct,silhouette,ari_vs_kmeans
+K-Means (k=6),6,0.0,0.46121446741302435,1.0
+"Hierarchical, Ward (k=6)",6,0.0,0.44250621565610354,0.8569214197973267
+"DBSCAN (eps=0.58, min_samples=16)",9,3.6923076923076925,0.3489294995739265,0.6558931228376041

@@ -1,0 +1,7 @@
+segment,Low,Medium,High,Critical
+"S1: New, low-spend, no internet, month-to-month",86.42857142857143,13.571428571428571,0.0,0.0
+"S2: Established, low-spend, DSL, month-to-month",43.30708661417323,29.133858267716533,26.37795275590551,1.1811023622047243
+"S3: Established, high-spend, fiber, month-to-month",3.8011695906432745,11.403508771929824,57.30994152046783,27.485380116959064
+"S4: Long-standing, low-spend, no internet, two-year",100.0,0.0,0.0,0.0
+"S5: Long-standing, mid-spend, DSL, two-year",98.08612440191388,1.9138755980861244,0.0,0.0
+"S6: Long-standing, high-spend, fiber, mixed contracts",61.07382550335571,23.154362416107382,15.771812080536913,0.0

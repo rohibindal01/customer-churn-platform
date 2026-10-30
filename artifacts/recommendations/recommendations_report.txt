@@ -1,0 +1,68 @@
+RETENTION RECOMMENDATIONS (validation split; the test split is not used)
+
+1. RISK BANDS (thresholds from the final model's metadata)
+   Low < 0.24 <= Medium < 0.40 <= High < 0.70 <= Critical
+    band  customers  share_pct  mean_predicted_pct  observed_churn_pct                            suggested_handling
+     Low        797       56.6                 7.7                 9.2        No proactive action; standard service.
+  Medium        205       14.5                31.4                26.8            Watch list: low-cost touches only.
+    High        310       22.0                54.7                55.2               Contact with a retention offer.
+Critical         97        6.9                76.6                77.3 Contact first, with a senior retention agent.
+   Observed churn should rise from band to band and sit near the mean predicted value.
+
+2. RULES TRIGGERED (customers in Medium, High or Critical bands; high-spend cut-off = 89.75, the training 75th percentile)
+                        title  Medium  High  Critical  total
+    Security or support trial      91   238        92    421
+           Contract incentive       0   306        97    403
+    Move to automatic payment      81   198        86    365
+         Fiber service review       0   243        94    337
+      New-customer onboarding      77   150        91    318
+Protect a high-value customer       0   113        33    146
+             Assisted support       0    89        37    126
+Review a recent bill increase       5    17         6     28
+
+3. RISK BAND MIX PER SEGMENT (% of each segment's customers)
+risk_band                                                Low  Medium  High  Critical
+segment                                                                             
+S1: New, low-spend, no internet, month-to-month         86.4    13.6   0.0       0.0
+S2: Established, low-spend, DSL, month-to-month         43.3    29.1  26.4       1.2
+S3: Established, high-spend, fiber, month-to-month       3.8    11.4  57.3      27.5
+S4: Long-standing, low-spend, no internet, two-year    100.0     0.0   0.0       0.0
+S5: Long-standing, mid-spend, DSL, two-year             98.1     1.9   0.0       0.0
+S6: Long-standing, high-spend, fiber, mixed contracts   61.1    23.2  15.8       0.0
+
+4. EXAMPLE CUSTOMERS (three highest predicted risks)
+  customer 5567-WSELE | Critical risk, probability 0.872 | S3: Established, high-spend, fiber, month-to-month
+    - New-customer onboarding [model driver; Tenure +1.66 log-odds for this customer]
+      Action: Schedule an onboarding check-in: service setup, first-bill walkthrough, satisfaction call.
+      Why: Short tenure is the final model's largest single risk driver.
+    - Fiber service review [model driver; Internet service +0.77 log-odds for this customer]
+      Action: Run a proactive service-quality check and review whether the price fits the plan.
+      Why: Fiber raises predicted risk. The data cannot say whether price or quality drives this, so investigate before offering discounts.
+    - Contract incentive [model driver; Contract +0.70 log-odds for this customer]
+      Action: Offer a discounted one- or two-year contract, for example a price lock.
+      Why: In the final model, month-to-month contracts raise predicted risk and two-year contracts lower it.
+
+  customer 3049-SOLAY | Critical risk, probability 0.863 | S3: Established, high-spend, fiber, month-to-month
+    - New-customer onboarding [model driver; Tenure +1.66 log-odds for this customer]
+      Action: Schedule an onboarding check-in: service setup, first-bill walkthrough, satisfaction call.
+      Why: Short tenure is the final model's largest single risk driver.
+    - Fiber service review [model driver; Internet service +0.77 log-odds for this customer]
+      Action: Run a proactive service-quality check and review whether the price fits the plan.
+      Why: Fiber raises predicted risk. The data cannot say whether price or quality drives this, so investigate before offering discounts.
+    - Contract incentive [model driver; Contract +0.70 log-odds for this customer]
+      Action: Offer a discounted one- or two-year contract, for example a price lock.
+      Why: In the final model, month-to-month contracts raise predicted risk and two-year contracts lower it.
+
+  customer 4822-RVYBB | Critical risk, probability 0.853 | S3: Established, high-spend, fiber, month-to-month
+    - New-customer onboarding [model driver; Tenure +1.38 log-odds for this customer]
+      Action: Schedule an onboarding check-in: service setup, first-bill walkthrough, satisfaction call.
+      Why: Short tenure is the final model's largest single risk driver.
+    - Fiber service review [model driver; Internet service +0.77 log-odds for this customer]
+      Action: Run a proactive service-quality check and review whether the price fits the plan.
+      Why: Fiber raises predicted risk. The data cannot say whether price or quality drives this, so investigate before offering discounts.
+    - Contract incentive [model driver; Contract +0.70 log-odds for this customer]
+      Action: Offer a discounted one- or two-year contract, for example a price lock.
+      Why: In the final model, month-to-month contracts raise predicted risk and two-year contracts lower it.
+
+DISCLAIMER
+  Recommendations are rule-based suggestions, separate from the model's prediction. Their effect on churn has not been measured; test them, for example with a controlled A/B test, before rolling them out.
