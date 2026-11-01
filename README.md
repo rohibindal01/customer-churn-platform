@@ -37,10 +37,6 @@ Every number in this README was **measured** by the pipeline scripts in this rep
 18. [Docker](#docker)
 19. [Testing](#testing)
 20. [Experiment tracking and reproducibility](#experiment-tracking-and-reproducibility)
-21. [Screenshots](#screenshots)
-22. [Limitations](#limitations)
-23. [Future improvements](#future-improvements)
-24. [License and acknowledgements](#license-and-acknowledgements)
 
 ---
 
@@ -397,27 +393,6 @@ python scripts\12_test_report.py
 - **Fixed seed (42)** everywhere. A test re-runs the split from the raw file and checks the customer IDs match the saved splits **in order**.
 - **`metadata.json`** stores the model, hyperparameters, threshold policies, input contract, feature names, validation and test metrics with confidence intervals, data fingerprint, package versions and how many times the test split was used.
 
-## Limitations
-
-- **One static snapshot.** The data has no time dimension, so there's no temporal validation and no drift monitoring.
-- **Placeholder business costs.** Customer value, offer cost and save rate are illustrative. Net-benefit figures demonstrate the method, not real revenue.
-- **Untested interventions.** Suggestions are rules, and their effect on churn has not been measured.
-- **Associations, not causes.** Explanations and segment profiles describe what the model and data show. Correlated features share credit.
-- **Validation figures are slightly optimistic**, because thresholds were chosen on the same rows. The test results are the honest estimate.
-- **Moderate cluster structure** (silhouette 0.46). Segments are a useful partition, not sharply separated groups.
-
-## Future improvements
-
-- **Explainable Boosting Machine (InterpretML):** a natural next experiment, since the evidence points to a near-additive signal. It was optional in the brief and was not built.
-- **Real business inputs:** replace the placeholder costs and run a controlled A/B test of the top retention actions.
-- **Capacity-aware targeting:** optimize the contact list for a fixed team capacity and expected value rather than a single threshold.
-- **Wider search ranges:** logistic regression's best `C` (3.0) and AdaBoost's `n_estimators` (500) sat at the edge of their ranges. Gains are expected to be small.
-- **Feature pruning:** the elastic net zeroed 11 of 50 encoded features. Removing them would need retraining and a fresh held-out test set.
-- **Native categorical CatBoost** variant as an extra benchmark entry.
-- **Monitoring:** input drift (for example population stability index) and scheduled re-evaluation.
-- **API and CI:** a FastAPI endpoint reusing `PredictionService`, and GitHub Actions running the test suite on each push.
-
-## License and acknowledgements
 
 Released under the [MIT License](LICENSE).
 
